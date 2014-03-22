@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin name: Rotate HTML
-Description: This plugin makes an AJAX call to display evenly rotated text/HTML
+Plugin name: RotoText
+Description: Store and display evenly rotated text by category with AJAX, jQuery and HTML5 data attributes.
 Version: 1.0.0
-Author: Jameson Proctor, Athleticsnyc
+Author: Jameson Proctor
 Author URI: http://jp1971.com/
 License: GPL2
 */

@@ -100,7 +100,7 @@ class KrnlRotoText {
 	function enqueue_scripts() {
 		wp_enqueue_script(
 			'roto_text'//$handle
-			,plugins_url() . "/athletics-rotate-html/js/roto_text.js" //$src
+			,plugins_url() . "/roto-text/js/roto_text.js" //$src
 			,array( 'jquery' ) //$deps (dependencies)
 			,'1.0' //$ver
 			,false //$in_footer

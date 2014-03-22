@@ -1,15 +1,15 @@
 <?php
 
-$roto_text_admin_url = admin_url().'options-general.php?page=rotatehtml';
+$roto_text_admin_url = admin_url().'options-general.php?page=rototext';
 
 add_action('admin_menu', 'roto_text_menu');
 function roto_text_menu() {
-	add_options_page( 'RotoText', 'RotoText', 'update_plugins', 'rotatehtml', 'roto_text_options' );
+	add_options_page( 'RotoText', 'RotoText', 'update_plugins', 'rototext', 'roto_text_options' );
 }
 
 // Add settings link on plugin page
 function roto_text_settings_link( $links ) { 
-  $settings_link = '<a href="options-general.php?page=rotatehtml">Settings</a>'; 
+  $settings_link = '<a href="options-general.php?page=rototext">Settings</a>'; 
   array_unshift( $links, $settings_link ); 
   return $links; 
 }
@@ -111,11 +111,15 @@ function roto_text_list() {
 
 	?>
 <div class="wrap">
-	<?php echo roto_text_page_title(); ?>
+	<h2>
+		RotoText
+		<input style="display: inline-block;" type="submit" class="add-new-h2" id="roto_text_add" name="roto_text_add" value="Add New" onclick="location.href='options-general.php?page=rototext&action=new'"/>
+		<!-- <a href="http://vgrnt.jp1971.com/wp-admin/post-new.php" class="add-new-h2">Add New</a> -->
+	</h2>
 	<div class="tablenav">
 		<div class="alignleft actions">
-			<input type="submit" class="button-secondary action" id="roto_text_add" name="roto_text_add" value="Add New" onclick="location.href='options-general.php?page=rotatehtml&action=new'"/>
-			Category: <select id="roto_text_category" name="roto_text_category" onchange="javascript:window.location='<?php echo $pageURL . '&cat='; ?>'+(this.options[this.selectedIndex].value);">
+			
+			Category: <select style="float: none;" id="roto_text_category" name="roto_text_category" onchange="javascript:window.location='<?php echo $pageURL . '&cat='; ?>'+(this.options[this.selectedIndex].value);">
 			<option value="">View all categories </option>
 			<?php echo roto_text_get_category_options( $cat ); ?>
 			</select>
@@ -143,7 +147,6 @@ function roto_text_list() {
 			$user_info = get_userdata( $row->user_id );
 			$author[$row->user_id] = $user_info->display_name;
 		}
-		// $status = ( $row->visible=='yes' ) ? 'visible' : 'hidden';
 		$bytes = strlen( $row->text );
 		if( strlen( $row->text ) > 200 ) {
 			$row->text = trim(mb_substr( $row->text, 0, 350, 'UTF-8' ) ) . '...';
@@ -151,7 +154,7 @@ function roto_text_list() {
 		echo '<tr' . $alt . '>
 		<td>' . $row->roto_text_id . '</td>
 		<td>' . esc_html($row->text) . '</td>
-		<td><a href="' . $pageURL . '&cat=' . $row->category . '">' . $row->category . '</a><br />' . $status . '</td>
+		<td><a href="' . $pageURL . '&cat=' . $row->category . '">' . $row->category . '</a><br /></td>
 		<td class="author column-author"><a href="' . $pageURL . '&author_id=' . $row->user_id . '">' . $author[ $row->user_id ] . '</a><br />' . $bytes . ' bytes</td>
 		<td><a href="' . $pageURL . '&action=edit&id=' . $row->roto_text_id . '">Edit</a><br />';
 		$del_link = wp_nonce_url( $pageURL . $del_paged . '&action=delete&id=' . $row->roto_text_id, 'roto_text_delete'  .  $row->roto_text_id );

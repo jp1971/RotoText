@@ -3,7 +3,7 @@
  *			rotate_html.js
  *
  *		desc:
- *			Rotates evenly through multiple CTA and 800 numbers in header.
+ *			Makes AJAX call to retreive text then replaces the HTML of the .krt_roto_text div.
  *
  *		requires:
  *			jQuery

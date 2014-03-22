@@ -1,44 +1,34 @@
-=== Random Text ===
-Contributors: pantsonhead
-Donate link: http://www.amazon.co.uk/gp/registry/1IX1RH4LFSY4W
-Tags: widget, plugin, sidebar, random, text, quotes
-Requires at least: 2.8
-Tested up to: 3.5.1
+=== RotoText ===
+Contributors: Jameson Proctor, Athleticsnyc
+Tags: rotate, text, HTML
+Requires at least: 3.0
+Tested up to: 3.8.1
 Stable tag: trunk
 
-Store and display random/rotated text by category in sidebar widget or templates.
+Store and display evenly rotated text by category with AJAX, jQuery and HTML5 data attributes.
 
 == Description ==
 
-RandomText is a handy WordPress plugin that allows you to save, edit and delete categorized text, and inject random/rotated text by category into the sidebar (via widget) or page body (via template tags). The sidebar widget allows you to set an optional Title, and text header and footer. You could say RandomText picks up where the Text widget left off. Whether you want to display random/rotated trivia, quotes, helpful hints, featured articles, or snippets of html, you can do it all easily with RandomText.
+RotoText allows you to create, update and delete categorized text. This text can be injected into your theme's templates by category and evenly rotated on http request. See the Usage section in Other Notes for information on incorporating into your theme.
 
 == Installation ==
 
-IMPORTANT: This plugin uses the WP_Widget class introduced in WordPress v2.8 and will not work with earlier versions of WordPress.
-
-1. Upload `randomtext.php` and `randomtext_admin.php` to the `/wp-content/plugins/` directory of your WordPress installation
+1. Install through the WordPress admin or upload the plugin folder to your /wp-content/plugins/ directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. The Random Text widget can now be configured and used from the Appearance -> Widgets menu
-4. Text entries can be managed via from the Settings -> Random Text menu
+
+See the Usage section for information on incorporating into your theme.
 
 Note: During installation, Random Text creates a new database table to store the entries by category  - you should see two test records after installation by clicking on the Settings -> Random Text menu.
 
 == Screenshots ==
 
-1. Sidebar widget options
-2. Text management page
+1. Text management page
 
 == Frequently Asked Questions ==
 
 = Can I use shortcodes? =
 
 Yes, you can use [randomtext] or [randomtext category="funny"] or even [randomtext category="funny" random="1"].
-
-= What about template tags? = 
-
-You can use something like this, where 'category' is the group you wish to select items from.
-< ?php randomtext('category'); ?>
-
 
 == Changelog ==
 

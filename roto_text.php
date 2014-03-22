@@ -3,12 +3,12 @@
 Plugin name: Rotate HTML
 Description: This plugin makes an AJAX call to display evenly rotated text/HTML
 Version: 1.0.0
-Author: JP1971
+Author: Jameson Proctor, Athleticsnyc
 Author URI: http://jp1971.com/
 License: GPL2
 */
 
-/*  Copyright 2014 JP1971 (jameson@jp1971.com)
+/*  Copyright 2014 Jameson Proctor (jameson@jp1971.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,21 +25,21 @@ License: GPL2
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
-class KrnlRotateHTML {
+class KrnlRotoText {
 
 	function get_next( $category = '' ) {
 
 		global $wpdb;
 
-		$table_name = $wpdb->prefix . 'rotate_html';
-	  	$sql = 'SELECT rotate_html_id, text FROM '. $table_name . " WHERE visible='yes' ";
+		$table_name = $wpdb->prefix . 'roto_text';
+	  	$sql = 'SELECT roto_text_id, text FROM '. $table_name . " WHERE visible='yes' ";
 		$sql .= ( $category!='' ) ? " AND category = '$category'" : '' ;
-		$sql .= ' ORDER BY timestamp, rotate_html_id LIMIT 1 ';
+		$sql .= ' ORDER BY timestamp, roto_text_id LIMIT 1 ';
 		$row = $wpdb->get_row( $sql );
 		
 		// update the timestamp of the row we just seleted (used by rotator, not by random)
-		if( intval( $row->rotate_html_id ) ) {
-			$sql = 'UPDATE ' . $table_name . ' SET timestamp = Now() WHERE rotate_html_id = ' . intval( $row->rotate_html_id );
+		if( intval( $row->roto_text_id ) ) {
+			$sql = 'UPDATE ' . $table_name . ' SET timestamp = Now() WHERE roto_text_id = ' . intval( $row->roto_text_id );
 			$wpdb->query( $sql );
 		}
 		
@@ -81,7 +81,7 @@ class KrnlRotateHTML {
 				<label for="' . $this->get_field_name( 'category' ) . '">Category: </label>
 				<select id="' . $this->get_field_id( 'category' ) . '" name="' . $this->get_field_name( 'category' ) . '">
 				<option value="">All Categories </option>';
-		echo rotate_html_get_category_options( $instance['category'] );
+		echo roto_text_get_category_options( $instance['category'] );
 		echo '</select></p>
 			<p>
 				<label for="' . $this->get_field_name( 'posttext' ) . '">Post-Text: </label> 
@@ -99,26 +99,26 @@ class KrnlRotateHTML {
 
 	function enqueue_scripts() {
 		wp_enqueue_script(
-			'rotate_html'//$handle
-			,plugins_url() . "/athletics-rotate-html/js/rotate_html.js" //$src
+			'roto_text'//$handle
+			,plugins_url() . "/athletics-rotate-html/js/roto_text.js" //$src
 			,array( 'jquery' ) //$deps (dependencies)
 			,'1.0' //$ver
 			,false //$in_footer
 		);
-		wp_localize_script( 'rotate_html', 'arh_ajax', array( 'url' => home_url( 'wp-admin/admin-ajax.php' ), 'nonce' => wp_create_nonce( 'arh_ajax_nonce' ) ) );
+		wp_localize_script( 'roto_text', 'krt_ajax', array( 'url' => home_url( 'wp-admin/admin-ajax.php' ), 'nonce' => wp_create_nonce( 'krt_ajax_nonce' ) ) );
 	}
 }
 
-function rotate_html( $category ) {
-	$rotate_html = new KrnlRotateHTML;
-	echo $rotate_html->get_next( $category );
+function roto_text( $category ) {
+	$roto_text = new KrnlRotoText;
+	echo $roto_text->get_next( $category );
 }
 
-function rotate_html_get_category_options( $category='' ) {
+function roto_text_get_category_options( $category='' ) {
 
 	global $wpdb;
 
-	$table_name = $wpdb->prefix . 'rotate_html';
+	$table_name = $wpdb->prefix . 'roto_text';
 	$sql = 'SELECT category FROM ' . $table_name . ' GROUP BY category ORDER BY category';
 	$rows = $wpdb->get_results( $sql );
 	
@@ -134,27 +134,27 @@ function rotate_html_get_category_options( $category='' ) {
 		}
 		$result .= '<option value="' . $row->category . '" ' . $selected . '>' . $categoryname . ' </option>';
 	}
-	if( !$option_nocategory )
+	if ( !$option_nocategory )
 		$result = '<option value="">' . $nocategory_name . ' </option>' . $result;
 	return $result;
 }
 
-register_activation_hook( __FILE__, 'rotate_html_install' );
-function rotate_html_install() {
+register_activation_hook( __FILE__, 'roto_text_install' );
+function roto_text_install() {
 
 	global $wpdb, $user_ID;
 
-	$table_name = $wpdb->prefix . 'rotate_html';
+	$table_name = $wpdb->prefix . 'roto_text';
 	// create the table if it doesn't exist 
 	if ( $wpdb->get_var( "SHOW TABLES LIKE '$table_name'" ) != $table_name ) {
 		$sql = "CREATE TABLE `$table_name` (
-			`rotate_html_id` int(10) unsigned NOT NULL auto_increment,
+			`roto_text_id` int(10) unsigned NOT NULL auto_increment,
 			`category` varchar(32) character set utf8 NOT NULL,
 			`text` text character set utf8 NOT NULL,
 			`visible` enum('yes','no') NOT NULL default 'yes',
 			`user_id` int(10) unsigned NOT NULL,
 			`timestamp` timestamp NOT NULL default '0000-00-00 00:00:00',
-			PRIMARY KEY  (`rotate_html_id`),
+			PRIMARY KEY  (`roto_text_id`),
 			KEY `visible` (`visible`),
 			KEY `category` (`category`),
 			KEY `timestamp` (`timestamp`) 
@@ -165,15 +165,15 @@ function rotate_html_install() {
 
 if ( is_admin() ) {
 	$plugin_basename = plugin_basename( __FILE__ ); 
-	include 'rotate_html_admin.php';
+	include 'roto_text_admin.php';
 }
 
-add_action( 'wp_enqueue_scripts', array( 'KrnlRotateHTML', 'enqueue_scripts' ) );
+add_action( 'wp_enqueue_scripts', array( 'KrnlRotoText', 'enqueue_scripts' ) );
 
-add_action( 'wp_ajax_arh_rotate_html', 'arh_rotate_html' );
-add_action( 'wp_ajax_nopriv_arh_rotate_html', 'arh_rotate_html' );
-	function arh_rotate_html( ) {
-		rotate_html( $_GET['category'] );
+add_action( 'wp_ajax_krt_roto_text', 'krt_roto_text' );
+add_action( 'wp_ajax_nopriv_krt_roto_text', 'krt_roto_text' );
+	function krt_roto_text( ) {
+		roto_text( $_GET['category'] );
 		die;
 	}	
 ?>

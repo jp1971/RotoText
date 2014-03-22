@@ -1,62 +1,62 @@
 <?php
 
-$rotate_html_admin_url = admin_url().'options-general.php?page=rotatehtml';
+$roto_text_admin_url = admin_url().'options-general.php?page=rotatehtml';
 
-add_action('admin_menu', 'rotate_html_menu');
-function rotate_html_menu() {
-	add_options_page( 'Rotate HTML', 'Rotate HTML', 'update_plugins', 'rotatehtml', 'rotate_html_options' );
+add_action('admin_menu', 'roto_text_menu');
+function roto_text_menu() {
+	add_options_page( 'RotoText', 'RotoText', 'update_plugins', 'rotatehtml', 'roto_text_options' );
 }
 
 // Add settings link on plugin page
-function rotate_html_settings_link( $links ) { 
+function roto_text_settings_link( $links ) { 
   $settings_link = '<a href="options-general.php?page=rotatehtml">Settings</a>'; 
   array_unshift( $links, $settings_link ); 
   return $links; 
 }
-add_filter( "plugin_action_links_$plugin_basename", 'rotate_html_settings_link' );
+add_filter( "plugin_action_links_$plugin_basename", 'roto_text_settings_link' );
 
 
-function rotate_html_options() {
+function roto_text_options() {
 	if ( $_POST ) {
 		// process the posted data and display summary page - not pretty :(
-		rotate_html_save( $_POST );
+		roto_text_save( $_POST );
 	}
 
 	$action = isset( $_GET['action'] ) ? $_GET['action'] : false;
 	switch( $action ){
 		case 'new' :
-			rotate_html_edit();
+			roto_text_edit();
 			break;
 		case 'edit' :
 			$id = intval( $_GET['id'] );
-			rotate_html_edit( $id );
+			roto_text_edit( $id );
 			break;
 		case 'delete' :
 			$id = intval( $_GET['id'] );
-			check_admin_referer( 'rotate_html_delete' . $id );
-			rotate_html_delete( $id );
+			check_admin_referer( 'roto_text_delete' . $id );
+			roto_text_delete( $id );
 			// now display summary page
-			rotate_html_list();
+			roto_text_list();
 			break;
 		default:
-			rotate_html_list();
+			roto_text_list();
 	}
 }
 
-function rotate_html_page_title( $suffix='' ) {
+function roto_text_page_title( $suffix='' ) {
  return '
- <div id="icon-options-general" class="icon32"><br/></div><h2>Rotate HTML '.$suffix.'</h2>
+ <div id="icon-options-general" class="icon32"><br/></div><h2>RotoText '.$suffix.'</h2>
  ';
 }
 
-function rotate_html_error( $text='An undefined error has occured.' ) {
-	echo '<div class="wrap">' . rotate_html_page_title( ' - ERROR!' ) . '<h3>' . $text . '</h3></div>';
+function roto_text_error( $text='An undefined error has occured.' ) {
+	echo '<div class="wrap">' . roto_text_page_title( ' - ERROR!' ) . '<h3>' . $text . '</h3></div>';
 }
  
-function rotate_html_list() {
-	global $wpdb, $user_ID, $rotate_html_admin_url;
-	$table_name = $wpdb->prefix . 'rotate_html';
-	$pageURL = $rotate_html_admin_url;
+function roto_text_list() {
+	global $wpdb, $user_ID, $roto_text_admin_url;
+	$table_name = $wpdb->prefix . 'roto_text';
+	$pageURL = $roto_text_admin_url;
 	$cat = isset( $_GET['cat'] ) ? $_GET['cat'] : false;
 	$author_id = isset( $_GET['author_id'] ) ? intval( $_GET['author_id'] ) : 0;
 	$where = $page_params = '';
@@ -101,7 +101,7 @@ function rotate_html_list() {
 	// now load the data to display
 
 	$startrow = ( $paged - 1 ) * $perpage;	
-	$rows = $wpdb->get_results( "SELECT * FROM $table_name $where ORDER BY rotate_html_id LIMIT $startrow, $perpage" );
+	$rows = $wpdb->get_results( "SELECT * FROM $table_name $where ORDER BY roto_text_id LIMIT $startrow, $perpage" );
 	$item_range = count( $rows );
 	if( $item_range > 1 ) {
 		$item_range = ( $startrow + 1 ) . ' - ' . ( $startrow + $item_range );
@@ -111,13 +111,13 @@ function rotate_html_list() {
 
 	?>
 <div class="wrap">
-	<?php echo rotate_html_page_title(); ?>
+	<?php echo roto_text_page_title(); ?>
 	<div class="tablenav">
 		<div class="alignleft actions">
-			<input type="submit" class="button-secondary action" id="rotate_html_add" name="rotate_html_add" value="Add New" onclick="location.href='options-general.php?page=rotatehtml&action=new'"/>
-			Category: <select id="rotate_html_category" name="rotate_html_category" onchange="javascript:window.location='<?php echo $pageURL . '&cat='; ?>'+(this.options[this.selectedIndex].value);">
+			<input type="submit" class="button-secondary action" id="roto_text_add" name="roto_text_add" value="Add New" onclick="location.href='options-general.php?page=rotatehtml&action=new'"/>
+			Category: <select id="roto_text_category" name="roto_text_category" onchange="javascript:window.location='<?php echo $pageURL . '&cat='; ?>'+(this.options[this.selectedIndex].value);">
 			<option value="">View all categories </option>
-			<?php echo rotate_html_get_category_options( $cat ); ?>
+			<?php echo roto_text_get_category_options( $cat ); ?>
 			</select>
 		</div>
 		<div class="tablenav-pages">
@@ -149,13 +149,13 @@ function rotate_html_list() {
 			$row->text = trim(mb_substr( $row->text, 0, 350, 'UTF-8' ) ) . '...';
 		}
 		echo '<tr' . $alt . '>
-		<td>' . $row->rotate_html_id . '</td>
+		<td>' . $row->roto_text_id . '</td>
 		<td>' . esc_html($row->text) . '</td>
 		<td><a href="' . $pageURL . '&cat=' . $row->category . '">' . $row->category . '</a><br />' . $status . '</td>
 		<td class="author column-author"><a href="' . $pageURL . '&author_id=' . $row->user_id . '">' . $author[ $row->user_id ] . '</a><br />' . $bytes . ' bytes</td>
-		<td><a href="' . $pageURL . '&action=edit&id=' . $row->rotate_html_id . '">Edit</a><br />';
-		$del_link = wp_nonce_url( $pageURL . $del_paged . '&action=delete&id=' . $row->rotate_html_id, 'rotate_html_delete'  .  $row->rotate_html_id );
-		echo '<a onclick="if ( confirm(\'You are about to delete post #' . $row->rotate_html_id . '\n Cancel to stop, OK to delete.\') ) { return true; }return false;" href="' . $del_link . '" title="Delete this post" class="submitdelete">Delete</a>';
+		<td><a href="' . $pageURL . '&action=edit&id=' . $row->roto_text_id . '">Edit</a><br />';
+		$del_link = wp_nonce_url( $pageURL . $del_paged . '&action=delete&id=' . $row->roto_text_id, 'roto_text_delete'  .  $row->roto_text_id );
+		echo '<a onclick="if ( confirm(\'You are about to delete post #' . $row->roto_text_id . '\n Cancel to stop, OK to delete.\') ) { return true; }return false;" href="' . $del_link . '" title="Delete this post" class="submitdelete">Delete</a>';
 		echo '</td></tr>';		
 	}
 	echo '</tbody></table>';
@@ -163,16 +163,16 @@ function rotate_html_list() {
   echo '</div>';
 }
 
-function rotate_html_edit( $rotate_html_id = 0 ) {
+function roto_text_edit( $roto_text_id = 0 ) {
 	
 	echo '<div class="wrap">';
 	$title = '- Add New';
-	if ( $rotate_html_id ) {
+	if ( $roto_text_id ) {
 		$title = '- Edit';
 		
 		global $wpdb;
-		$table_name = $wpdb->prefix . 'rotate_html';
-		$sql = "SELECT * from $table_name where rotate_html_id=$rotate_html_id";
+		$table_name = $wpdb->prefix . 'roto_text';
+		$sql = "SELECT * from $table_name where roto_text_id=$roto_text_id";
 		$row = $wpdb->get_row( $sql );
 		if ( !$row ) {
 			$error_text = '<h2>The requested entry was not found.</h2>';
@@ -182,63 +182,63 @@ function rotate_html_edit( $rotate_html_id = 0 ) {
 		$row->text = '';
 		$row->visible = 'yes';
 	}
-	echo rotate_html_page_title( $title ); 
+	echo roto_text_page_title( $title ); 
 	
-	if ( $rotate_html_id && !$row ) {
+	if ( $roto_text_id && !$row ) {
 		echo '<h3>The requested entry was not found.</h3>';
 	} else {
 	// display the add/edit form 
-	global $rotate_html_admin_url;
+	global $roto_text_admin_url;
 	
-		echo '<form method="post" action="' . $rotate_html_admin_url . '">
-			' . wp_nonce_field( 'rotate_html_edit' . $rotate_html_id ) . '
-			<input type="hidden" id="rotate_html_id" name="rotate_html_id" value="' . $rotate_html_id . '">
+		echo '<form method="post" action="' . $roto_text_admin_url . '">
+			' . wp_nonce_field( 'roto_text_edit' . $roto_text_id ) . '
+			<input type="hidden" id="roto_text_id" name="roto_text_id" value="' . $roto_text_id . '">
 			<h3>Text To Display</h3>
-			<textarea name="rotate_html_text" style="width: 80%; height: 100px;">' . apply_filters( 'format_to_edit', $row->text ) . '</textarea>
+			<textarea name="roto_text_text" style="width: 80%; height: 100px;">' . apply_filters( 'format_to_edit', $row->text ) . '</textarea>
 			<h3>Category</h3>
 			<p>Select a category from the list or enter a new one.</p>
-			<label for="rotate_html_category">Category: </label><select id="rotate_html_category" name="rotate_html_category">'; 
-		echo rotate_html_get_category_options( $row->category );
+			<label for="roto_text_category">Category: </label><select id="roto_text_category" name="roto_text_category">'; 
+		echo roto_text_get_category_options( $row->category );
 		echo '</select></p>
-			<p><label for="rotate_html_category_new">New Category: </label><input type="text" id="rotate_html_category_new" name="rotate_html_category_new"></p>';
+			<p><label for="roto_text_category_new">New Category: </label><input type="text" id="roto_text_category_new" name="roto_text_category_new"></p>';
 		echo '<div class="submit">
-			<input class="button-primary" type="submit" name="rotate_html_save" value="Save Changes" />
+			<input class="button-primary" type="submit" name="roto_text_save" value="Save Changes" />
 			</div>
 			</form>
 			
-			<p>Return to <a href="' . $rotate_html_admin_url . '">Rotate HTML summary page</a>.</p>';
+			<p>Return to <a href="' . $roto_text_admin_url . '">RotoText summary page</a>.</p>';
 	}
   echo '</div>';	
 }
 
-function rotate_html_save( $data ) {
+function roto_text_save( $data ) {
 	global $wpdb, $user_ID;
-	$table_name = $wpdb->prefix . 'rotate_html';
+	$table_name = $wpdb->prefix . 'roto_text';
 	
-	$rotate_html_id = intval( $data['rotate_html_id'] );
-	check_admin_referer( 'rotate_html_edit' . $rotate_html_id );
+	$roto_text_id = intval( $data['roto_text_id'] );
+	check_admin_referer( 'roto_text_edit' . $roto_text_id );
 	
 	$sqldata = array();
-	$category_new = trim( $data['rotate_html_category_new'] );
-	$sqldata['category'] = ( $category_new ) ? $category_new : $data['rotate_html_category'];
+	$category_new = trim( $data['roto_text_category_new'] );
+	$sqldata['category'] = ( $category_new ) ? $category_new : $data['roto_text_category'];
 	$sqldata['user_id'] = $user_ID;
 	$sqldata['visible'] = 'yes';
 	
-	$sqldata['text'] = trim( stripslashes( $data['rotate_html_text'] ) );
-	if ( $rotate_html_id ) {
-		$wpdb->update( $table_name, $sqldata, array( 'rotate_html_id'=>$rotate_html_id ) );
+	$sqldata['text'] = trim( stripslashes( $data['roto_text_text'] ) );
+	if ( $roto_text_id ) {
+		$wpdb->update( $table_name, $sqldata, array( 'roto_text_id'=>$roto_text_id ) );
 	} else {
 		$wpdb->insert( $table_name, $sqldata );
 	}
 }
 
-function rotate_html_delete( $id ) {
+function roto_text_delete( $id ) {
 
 	global $wpdb;
 
-	$table_name = $wpdb->prefix . 'rotate_html';
+	$table_name = $wpdb->prefix . 'roto_text';
 	$id = intval( $id );
-	$sql = "DELETE FROM $table_name WHERE rotate_html_id = $id";
+	$sql = "DELETE FROM $table_name WHERE roto_text_id = $id";
 	$wpdb->query( $sql );
 }
 

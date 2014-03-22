@@ -10,19 +10,19 @@
  */
 
 jQuery( document ).ready( function( $ ) {	
-	var nonce = 'arh_ajax.nonce';
-	category = $( '.arh_rotate_html' ).data( 'category' );
+	var nonce = 'krt_ajax.nonce';
+	category = $( '.krt_roto_text' ).data( 'category' );
 
 	$.ajax({
-	    url: arh_ajax.url,
+	    url: krt_ajax.url,
 	    dataType:'html',
-	    data: ( {action:'arh_rotate_html', category:category, nonce:nonce} ),
+	    data: ( {action:'krt_roto_text', category:category, nonce:nonce} ),
 	    success: function( html ) {
-	    	$( '.arh_rotate_html' ).html( html );
-	    	$( '.arh_rotate_html' ).css( 'visibility', 'visible' );
+	    	$( '.krt_roto_text' ).html( html );
+	    	$( '.krt_roto_text' ).css( 'visibility', 'visible' );
 	    },
 	    error: function( jqXHR, textStatus, errorThrown ) {
-	    	$( '.arh_rotate_html' ).html( errorThrown );
+	    	$( '.krt_roto_text' ).html( errorThrown );
 	    }
 	});
 });

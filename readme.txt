@@ -22,8 +22,6 @@ Note: During installation, Random Text creates a new database table to store the
 
 == Screenshots ==
 
-1. Text management page
-
 == Frequently Asked Questions ==
 
 = Can I use HTML? =

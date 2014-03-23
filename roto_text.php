@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin name: RotoText
-Description: Store and display evenly rotated text by category with AJAX, jQuery and HTML5 data attributes.
+Description: Create and categorize text then display on even rotation
 Version: 1.0.0
 Author: Jameson Proctor
 Author URI: http://jp1971.com/

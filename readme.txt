@@ -5,11 +5,11 @@ Requires at least: 3.0
 Tested up to: 3.8.1
 Stable tag: trunk
 
-Store and display evenly rotated text by category with AJAX, jQuery and HTML5 data attributes.
+Create and categorize text then display on even rotation
 
 == Description ==
 
-RotoText allows you to create, update and delete categorized text. This text can be injected into your theme's templates by category and evenly rotated on http request. See the Usage section in Other Notes for information on incorporating into your theme.
+RotoText allows you to create, update and delete categorized text that can be injected into your theme's templates by category and evenly rotated on http request. See the Usage section in Other Notes for information on incorporating into your theme.
 
 == Installation ==
 
@@ -36,4 +36,4 @@ Yes, the Text To Display field supports both plain text and HTML.
 
 == Usage ==
 
-After activating the plugin, navigate to Settings > RotoText in the WordPress admin to create some text to display. Then, add a div with the class of krt_roto_text and a data attribute named cateogory with the value of the text you would like to display - e.g. `<div class="krt_roto_text" data-category="my-category"></div>`
+After activating the plugin, navigate to Settings > RotoText in the WordPress admin to create some text to display. Then, add a div to a template with the class of krt_roto_text and a data attribute named category with the value of the text you would like to display - e.g. `<div class="krt_roto_text" data-category="my-category"></div>`
